@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Меню на неделю — Набор массы</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface2: #222222;
+    --border: #2e2e2e;
+    --accent: #c8f04a;
+    --accent2: #f0a830;
+    --text: #f0ede6;
+    --muted: #888;
+    --protein-color: #a78bfa;
+    --fat-color: #fb923c;
+    --carb-color: #38bdf8;
+    --kcal-color: #c8f04a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* HERO */
+  .hero {
+    padding: 60px 32px 40px;
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .hero-label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(56px, 10vw, 110px);
+    line-height: 0.9;
+    color: var(--text);
+    letter-spacing: 1px;
+  }
+
+  .hero h1 span {
+    color: var(--accent);
+  }
+
+  .hero-sub {
+    margin-top: 20px;
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 440px;
+    line-height: 1.6;
+  }
+
+  /* STATS BAR */
+  .stats-bar {
+    max-width: 1100px;
+    margin: 0 auto 40px;
+    padding: 0 32px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 24px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s;
+  }
+
+  .stat-card:hover { transform: translateY(-2px); }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .stat-card.kcal::before { background: var(--kcal-color); }
+  .stat-card.protein::before { background: var(--protein-color); }
+  .stat-card.fat::before { background: var(--fat-color); }
+  .stat-card.carb::before { background: var(--carb-color); }
+
+  .stat-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .stat-value {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+
+  .stat-card.kcal .stat-value { color: var(--kcal-color); }
+  .stat-card.protein .stat-value { color: var(--protein-color); }
+  .stat-card.fat .stat-value { color: var(--fat-color); }
+  .stat-card.carb .stat-value { color: var(--carb-color); }
+
+  .stat-unit { font-size: 13px; color: var(--muted); }
+
+  /* SUPPLEMENTS */
+  .supplements {
+    max-width: 1100px;
+    margin: 0 auto 40px;
+    padding: 0 32px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .supp-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: border-color 0.2s;
+  }
+
+  .supp-card:hover { border-color: #444; }
+
+  .supp-icon {
+    font-size: 32px;
+    flex-shrink: 0;
+  }
+
+  .supp-info { flex: 1; }
+
+  .supp-title {
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 4px;
+  }
+
+  .supp-timing {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .supp-macros {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .macro-pill {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+  }
+
+  .macro-pill.p { background: rgba(167,139,250,0.15); color: var(--protein-color); }
+  .macro-pill.f { background: rgba(251,146,60,0.15); color: var(--fat-color); }
+  .macro-pill.c { background: rgba(56,189,248,0.15); color: var(--carb-color); }
+  .macro-pill.k { background: rgba(200,240,74,0.15); color: var(--kcal-color); }
+
+  /* DAYS NAV */
+  .days-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 32px 60px;
+  }
+
+  .days-nav {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+
+  .day-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 20px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .day-btn:hover {
+    border-color: #555;
+    color: var(--text);
+  }
+
+  .day-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #0f0f0f;
+  }
+
+  .day-btn .training-dot {
+    position: absolute;
+    top: 6px; right: 6px;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--accent2);
+  }
+
+  .day-btn.active .training-dot { background: #0f0f0f; }
+
+  /* MEAL CARDS */
+  .meals-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  .meal-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 22px 24px;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+  }
+
+  .meal-card:hover {
+    border-color: #3a3a3a;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+
+  .meal-card.is-supp {
+    border-style: dashed;
+    border-color: #333;
+    background: #161616;
+  }
+
+  .meal-card.is-supp:hover { border-color: #444; }
+
+  .meal-type-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .type-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+  }
+
+  .badge-breakfast { background: rgba(240,168,48,0.15); color: var(--accent2); }
+  .badge-lunch { background: rgba(74,222,128,0.12); color: #4ade80; }
+  .badge-dinner { background: rgba(167,139,250,0.12); color: var(--protein-color); }
+  .badge-snack { background: rgba(248,113,113,0.12); color: #f87171; }
+  .badge-gainer { background: rgba(240,168,48,0.12); color: var(--accent2); }
+  .badge-protein { background: rgba(167,139,250,0.12); color: var(--protein-color); }
+
+  .meal-name {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+
+  .meal-macros-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+
+  .meal-ingredients-text {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 14px;
+  }
+
+  .recipe-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 8px 16px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+    text-align: left;
+  }
+
+  .recipe-btn:hover {
+    background: var(--surface2);
+    color: var(--text);
+    border-color: #444;
+  }
+
+  .recipe-content {
+    display: none;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    font-size: 13px;
+    color: #aaa;
+    line-height: 1.8;
+  }
+
+  /* TOTALS */
+  .day-totals {
+    margin-top: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 28px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .totals-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--muted);
+    font-weight: 700;
+  }
+
+  .totals-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .totals-item .t-label { font-size: 11px; color: var(--muted); }
+  .totals-item .t-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    line-height: 1;
+  }
+
+  .t-val.kcal { color: var(--kcal-color); }
+  .t-val.prot { color: var(--protein-color); }
+  .t-val.fat  { color: var(--fat-color); }
+  .t-val.carb { color: var(--carb-color); }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 32px;
+    color: #444;
+    font-size: 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 680px) {
+    .stats-bar { grid-template-columns: repeat(2, 1fr); }
+    .supplements { grid-template-columns: 1fr; }
+    .meals-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 52px; }
+    .hero, .stats-bar, .supplements, .days-section { padding-left: 16px; padding-right: 16px; }
+    .day-totals { gap: 16px; }
+  }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .meal-card {
+    animation: fadeUp 0.3s ease both;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">💪 Программа питания · 67 кг · Набор массы</div>
+  <h1>МЕНЮ<br>НА <span>НЕДЕЛЮ</span></h1>
+  <p class="hero-sub">Рацион рассчитан под набор мышечной массы с учётом тренировок 2–3 раза в неделю и спортивного питания.</p>
+</div>
+
+<div class="stats-bar">
+  <div class="stat-card kcal">
+    <div class="stat-label">Калории</div>
+    <div class="stat-value">3350</div>
+    <div class="stat-unit">ккал / день</div>
+  </div>
+  <div class="stat-card protein">
+    <div class="stat-label">Белки</div>
+    <div class="stat-value">215</div>
+    <div class="stat-unit">г / день</div>
+  </div>
+  <div class="stat-card fat">
+    <div class="stat-label">Жиры</div>
+    <div class="stat-value">97</div>
+    <div class="stat-unit">г / день</div>
+  </div>
+  <div class="stat-card carb">
+    <div class="stat-label">Углеводы</div>
+    <div class="stat-value">369</div>
+    <div class="stat-unit">г / день</div>
+  </div>
+</div>
+
+<div class="supplements">
+  <div class="supp-card">
+    <div class="supp-icon">🥤</div>
+    <div class="supp-info">
+      <div class="supp-title">Гейнер — 100г</div>
+      <div class="supp-timing">⏱ За 60 минут до тренировки</div>
+      <div class="supp-macros">
+        <span class="macro-pill k">400 ккал</span>
+        <span class="macro-pill p">Б 25г</span>
+        <span class="macro-pill f">Ж 7.1г</span>
+        <span class="macro-pill c">У 58.9г</span>
+      </div>
+    </div>
+  </div>
+  <div class="supp-card">
+    <div class="supp-icon">🧪</div>
+    <div class="supp-info">
+      <div class="supp-title">Протеин — 30г</div>
+      <div class="supp-timing">⚡ После тренировки / утром в дни отдыха</div>
+      <div class="supp-macros">
+        <span class="macro-pill k">110 ккал</span>
+        <span class="macro-pill p">Б 23.4г</span>
+        <span class="macro-pill f">Ж 1.8г</span>
+        <span class="macro-pill c">У 1.2г</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="days-section">
+  <div class="days-nav" id="daysNav">
+    <button class="day-btn active" onclick="showDay(0,this)">Понедельник<span class="training-dot"></span></button>
+    <button class="day-btn" onclick="showDay(1,this)">Вторник</button>
+    <button class="day-btn" onclick="showDay(2,this)">Среда<span class="training-dot"></span></button>
+    <button class="day-btn" onclick="showDay(3,this)">Четверг</button>
+    <button class="day-btn" onclick="showDay(4,this)">Пятница<span class="training-dot"></span></button>
+    <button class="day-btn" onclick="showDay(5,this)">Суббота</button>
+    <button class="day-btn" onclick="showDay(6,this)">Воскресенье</button>
+  </div>
+
+  <div id="mealsContainer"></div>
+</div>
+
+<footer>
+  🟡 Оранжевая точка на кнопке дня = тренировочный день &nbsp;·&nbsp; Рацион составлен на основе ваших параметров
+</footer>
+
+<script>
+const days = [
+  { training: true, meals: [
+    { type:"breakfast", label:"Завтрак", name:"Овсяная каша с яйцами и бананом", kcal:620, p:32, f:18, c:78, ing:"Овсянка 100г, 3 яйца, банан 1шт, молоко 150мл, мёд 1 ч.л.", recipe:"1. Овсянку залить молоком, варить 5 мин на среднем огне, помешивая.\n2. Яйца сварить вкрутую (10 мин) или пожарить.\n3. Кашу подсластить мёдом, подать с бананом и яйцами." },
+    { type:"gainer", label:"Гейнер", name:"Гейнер 100г — до тренировки", kcal:400, p:25, f:7, c:59, ing:"100г гейнера + 300–400мл воды или молока.", recipe:"Размешать в шейкере. Выпить за 60 минут до тренировки." },
+    { type:"lunch", label:"Обед", name:"Куриное филе с гречкой и брокколи", kcal:750, p:52, f:18, c:85, ing:"Куриное филе 200г, гречка 120г, брокколи 150г, оливковое масло 1 ст.л.", recipe:"1. Гречку промыть, варить 15 мин.\n2. Филе обжарить по 5 мин с каждой стороны.\n3. Брокколи отварить 4–5 мин. Подать всё вместе." },
+    { type:"protein", label:"Протеин", name:"Протеиновый шейк — после тренировки", kcal:110, p:23, f:2, c:1, ing:"30г протеина + 250мл воды или молока.", recipe:"Смешать в шейкере. Выпить в течение 30 мин после тренировки." },
+    { type:"snack", label:"Перекус", name:"Творог с орехами", kcal:320, p:28, f:14, c:18, ing:"Творог 5% 200г, грецкие орехи 30г, мёд 1 ч.л.", recipe:"Смешать творог с мёдом, посыпать дроблёными орехами." },
+    { type:"dinner", label:"Ужин", name:"Лосось с картофелем и салатом", kcal:850, p:45, f:28, c:78, ing:"Лосось 200г, картофель 250г, огурец, помидор, зелень, лимон, масло.", recipe:"1. Картофель отварить 20 мин.\n2. Лосось запечь при 180°C 15–18 мин.\n3. Овощи нарезать, заправить маслом и лимоном." }
+  ]},
+  { training: false, meals: [
+    { type:"protein", label:"Протеин", name:"Протеиновый шейк — утро", kcal:110, p:23, f:2, c:1, ing:"30г протеина + 250мл молока.", recipe:"Смешать в шейкере, выпить утром." },
+    { type:"breakfast", label:"Завтрак", name:"Яичница с тостами и авокадо", kcal:600, p:28, f:28, c:52, ing:"3 яйца, хлеб цельнозерновой 2 ломтика, авокадо ½шт, помидор.", recipe:"1. Яйца обжарить 2–3 мин.\n2. Авокадо размять, намазать на тост.\n3. Подать вместе с помидором." },
+    { type:"lunch", label:"Обед", name:"Говядина с рисом и овощами", kcal:780, p:50, f:22, c:88, ing:"Говядина 200г, рис 120г, болгарский перец, морковь, лук, соевый соус.", recipe:"1. Рис сварить 20 мин.\n2. Говядину нарезать, обжарить 5–7 мин.\n3. Добавить овощи и соевый соус, тушить 8–10 мин." },
+    { type:"snack", label:"Перекус", name:"Кефир с бананом", kcal:280, p:12, f:6, c:44, ing:"Кефир 1% 300мл, банан 1шт.", recipe:"Смешать в блендере — быстрый смузи." },
+    { type:"dinner", label:"Ужин", name:"Куриные бёдра с гречкой", kcal:820, p:52, f:30, c:72, ing:"Куриные бёдра без кожи 250г, гречка 120г, чеснок, розмарин, масло.", recipe:"1. Бёдра замариновать в масле с чесноком и розмарином 20 мин.\n2. Запечь при 200°C 30–35 мин.\n3. Гречку отварить параллельно." },
+    { type:"snack", label:"Перекус 2", name:"Творог с мёдом и орехами", kcal:250, p:24, f:8, c:20, ing:"Творог 5% 180г, мёд 1 ч.л., грецкие орехи 20г.", recipe:"Смешать творог с мёдом, посыпать орехами." }
+  ]},
+  { training: true, meals: [
+    { type:"breakfast", label:"Завтрак", name:"Блинчики с творогом", kcal:640, p:34, f:20, c:74, ing:"Мука 80г, 2 яйца, молоко 200мл, творог 150г, сахар 1 ч.л.", recipe:"1. Замесить тесто: яйца + молоко + мука + соль.\n2. Жарить тонкие блины 1.5 мин с каждой стороны.\n3. Творог смешать с сахаром, завернуть в блинчики." },
+    { type:"gainer", label:"Гейнер", name:"Гейнер 100г — до тренировки", kcal:400, p:25, f:7, c:59, ing:"100г гейнера + 300–400мл воды или молока.", recipe:"Размешать в шейкере. Выпить за 60 минут до тренировки." },
+    { type:"lunch", label:"Обед", name:"Борщ с мясом и хлебом", kcal:700, p:38, f:20, c:80, ing:"Говядина 150г, свёкла, капуста, картофель 2шт, морковь, лук, томатная паста.", recipe:"1. Сварить бульон 40 мин.\n2. Добавить картофель, затем зажарку из свёклы, моркови и лука.\n3. Добавить капусту, варить 7 мин. Посолить, подать со сметаной." },
+    { type:"protein", label:"Протеин", name:"Протеиновый шейк — после тренировки", kcal:110, p:23, f:2, c:1, ing:"30г протеина + 250мл воды.", recipe:"Смешать в шейкере. Выпить сразу после тренировки." },
+    { type:"snack", label:"Перекус", name:"Яйца вкрутую с хлебцами", kcal:260, p:22, f:12, c:16, ing:"2 яйца, хлебцы ржаные 4шт, огурец.", recipe:"Яйца отварить 10 мин. Подать с хлебцами и огурцом." },
+    { type:"dinner", label:"Ужин", name:"Пельмени со сметаной", kcal:750, p:38, f:26, c:80, ing:"Пельмени 300г, сметана 1 ст.л., зелень.", recipe:"1. Вскипятить воду, посолить.\n2. Варить пельмени 5–7 мин после всплытия.\n3. Подать со сметаной и зеленью." }
+  ]},
+  { training: false, meals: [
+    { type:"protein", label:"Протеин", name:"Протеиновый шейк — утро", kcal:110, p:23, f:2, c:1, ing:"30г протеина + 250мл молока.", recipe:"Смешать в шейкере утром." },
+    { type:"breakfast", label:"Завтрак", name:"Овсянка с яблоком и орехами", kcal:580, p:20, f:20, c:76, ing:"Овсянка 100г, молоко 200мл, яблоко 1шт, миндаль 30г, корица.", recipe:"1. Сварить овсянку на молоке 5 мин.\n2. Добавить нарезанное яблоко и корицу.\n3. Посыпать дроблёным миндалём." },
+    { type:"lunch", label:"Обед", name:"Рыбный суп + куриное филе с рисом", kcal:760, p:56, f:18, c:72, ing:"Белая рыба 150г, картофель 2шт, морковь, куриное филе 150г, рис 80г.", recipe:"1. Рыбный суп: отварить рыбу с овощами 20 мин.\n2. Куриное филе обжарить 8–10 мин.\n3. Рис отварить отдельно." },
+    { type:"snack", label:"Перекус", name:"Творог с мёдом", kcal:280, p:26, f:10, c:22, ing:"Творог 5% 200г, мёд 2 ч.л., грецкие орехи 20г.", recipe:"Смешать творог с мёдом. Посыпать орехами." },
+    { type:"dinner", label:"Ужин", name:"Говядина тушёная с картофелем", kcal:860, p:50, f:28, c:80, ing:"Говядина 250г, картофель 300г, лук, морковь, томатная паста, специи.", recipe:"1. Говядину обжарить до корочки 5 мин.\n2. Добавить овощи, тушить 5 мин.\n3. Добавить картофель, 300мл воды. Тушить 40–45 мин." },
+    { type:"snack", label:"Перекус 2", name:"Кефир с хлебцами", kcal:220, p:12, f:4, c:32, ing:"Кефир 1% 300мл, хлебцы 4шт.", recipe:"Быстрый перекус без готовки." }
+  ]},
+  { training: true, meals: [
+    { type:"breakfast", label:"Завтрак", name:"Сырники с бананом", kcal:620, p:30, f:18, c:72, ing:"Творог 5% 300г, 1 яйцо, мука 3 ст.л., сахар 1 ст.л., банан.", recipe:"1. Смешать творог, яйцо, муку, сахар.\n2. Сформировать сырники, обвалять в муке.\n3. Жарить 3 мин с каждой стороны. Подать с бананом." },
+    { type:"gainer", label:"Гейнер", name:"Гейнер 100г — до тренировки", kcal:400, p:25, f:7, c:59, ing:"100г гейнера + 300–400мл воды или молока.", recipe:"Размешать в шейкере. Выпить за 60 минут до тренировки." },
+    { type:"lunch", label:"Обед", name:"Куриный суп с лапшой", kcal:680, p:42, f:14, c:82, ing:"Куриная грудка 200г, лапша 80г, картофель 2шт, морковь, лук, зелень.", recipe:"1. Грудку варить 30 мин в 1.5л воды.\n2. Добавить картофель и зажарку, варить 10 мин.\n3. Засыпать лапшу, варить 5–7 мин. Посолить, добавить зелень." },
+    { type:"protein", label:"Протеин", name:"Протеиновый шейк — после тренировки", kcal:110, p:23, f:2, c:1, ing:"30г протеина + 250мл воды.", recipe:"Смешать в шейкере. Выпить сразу после тренировки." },
+    { type:"snack", label:"Перекус", name:"Яйца и помидор", kcal:240, p:18, f:14, c:8, ing:"2 яйца, помидор 1шт, соль.", recipe:"Яйца сварить вкрутую. Подать с нарезанным помидором." },
+    { type:"dinner", label:"Ужин", name:"Запечённая рыба с рисом", kcal:800, p:48, f:22, c:84, ing:"Дорадо или треска 250г, рис 130г, лимон, специи, оливковое масло.", recipe:"1. Рыбу натереть специями и маслом, сбрызнуть лимоном.\n2. Запечь при 180°C 20–25 мин.\n3. Рис отварить параллельно 20 мин." }
+  ]},
+  { training: false, meals: [
+    { type:"protein", label:"Протеин", name:"Протеиновый шейк — утро", kcal:110, p:23, f:2, c:1, ing:"30г протеина + 250мл молока.", recipe:"Смешать в шейкере утром." },
+    { type:"breakfast", label:"Завтрак", name:"Гречневая каша с яйцами", kcal:600, p:28, f:18, c:72, ing:"Гречка 100г, 2 яйца, молоко 200мл, сливочное масло 10г.", recipe:"1. Гречку сварить до готовности, добавить масло.\n2. Яйца обжарить. Подать с молоком." },
+    { type:"lunch", label:"Обед", name:"Курица на сковороде с овощами", kcal:820, p:58, f:26, c:68, ing:"Куриные бёдра без кожи 300г, кабачок, перец, лук, кефир 100мл, специи, оливковое масло.", recipe:"1. Мясо замариновать в кефире со специями 2+ часа.\n2. Разогреть сковороду с маслом на сильном огне.\n3. Обжарить бёдра по 6–7 мин с каждой стороны до золотистой корочки, затем убавить огонь, накрыть крышкой и готовить ещё 10 мин.\n4. Кабачок, перец и лук нарезать, обжарить отдельно 7–8 мин." },
+    { type:"snack", label:"Перекус", name:"Творожный смузи", kcal:300, p:22, f:6, c:38, ing:"Творог 150г, апельсин 1шт, банан ½шт, молоко 100мл.", recipe:"Все ингредиенты измельчить блендером." },
+    { type:"dinner", label:"Ужин", name:"Спагетти с мясным соусом", kcal:860, p:42, f:24, c:96, ing:"Спагетти 130г, фарш говяжий 200г, помидоры 2шт, лук, чеснок, оливковое масло.", recipe:"1. Лук и чеснок обжарить 3 мин, добавить фарш, готовить 7 мин.\n2. Добавить помидоры, тушить 15 мин.\n3. Спагетти отварить al dente. Подать с соусом." },
+    { type:"snack", label:"Перекус 2", name:"Сыр и хлебцы", kcal:280, p:16, f:16, c:18, ing:"Сыр 45% 50г, хлебцы 4шт, огурец.", recipe:"Нарезать сыр, подать с хлебцами и огурцом." }
+  ]},
+  { training: false, meals: [
+    { type:"protein", label:"Протеин", name:"Протеиновый шейк — утро", kcal:110, p:23, f:2, c:1, ing:"30г протеина + 250мл молока.", recipe:"Смешать в шейкере утром." },
+    { type:"breakfast", label:"Завтрак", name:"Омлет с сыром и овощами", kcal:580, p:34, f:28, c:28, ing:"3 яйца, молоко 50мл, сыр 40г, болгарский перец, помидор.", recipe:"1. Яйца взбить с молоком и тёртым сыром.\n2. Овощи обжарить 2 мин.\n3. Вылить яичную смесь, накрыть крышкой, готовить 4–5 мин." },
+    { type:"lunch", label:"Обед", name:"Запечённая курица с картофелем", kcal:900, p:60, f:32, c:76, ing:"Куриная ножка/бедро 350г, картофель 300г, чеснок, розмарин, оливковое масло.", recipe:"1. Курицу натереть маслом с чесноком и розмарином.\n2. Картофель нарезать дольками, выложить рядом.\n3. Запекать при 200°C 45–50 мин." },
+    { type:"snack", label:"Перекус", name:"Банан и орехи", kcal:300, p:8, f:16, c:34, ing:"Банан 1шт, смесь орехов 40г.", recipe:"Быстрый перекус без готовки." },
+    { type:"dinner", label:"Ужин", name:"Куриный стейк с гречкой и брокколи", kcal:760, p:52, f:20, c:80, ing:"Куриное филе 220г, гречка 120г, брокколи 200г, соевый соус, чеснок.", recipe:"1. Филе замариновать в соевом соусе с чесноком 15 мин.\n2. Обжарить по 5–6 мин с каждой стороны.\n3. Гречку отварить. Брокколи приготовить на пару 5 мин." },
+    { type:"snack", label:"Перекус 2", name:"Творог с вареньем", kcal:260, p:22, f:8, c:28, ing:"Творог 5% 200г, варенье 2 ч.л.", recipe:"Смешать. Готово." }
+  ]}
+];
+
+const badgeClass = { breakfast:'badge-breakfast', lunch:'badge-lunch', dinner:'badge-dinner', snack:'badge-snack', gainer:'badge-gainer', protein:'badge-protein' };
+
+function toggleRecipe(btn) {
+  const card = btn.closest('.meal-card');
+  const rc = card.querySelector('.recipe-content');
+  const open = rc.style.display === 'block';
+  rc.style.display = open ? 'none' : 'block';
+  btn.textContent = open ? '📖 Показать рецепт' : '📖 Скрыть рецепт';
+}
+
+function showDay(idx, el) {
+  document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  const day = days[idx];
+  let tKcal=0, tP=0, tF=0, tC=0;
+  day.meals.forEach(m => { tKcal+=m.kcal; tP+=m.p; tF+=m.f; tC+=m.c; });
+
+  const isSupp = t => t === 'gainer' || t === 'protein';
+
+  let html = '<div class="meals-grid">';
+  day.meals.forEach((m, i) => {
+    const delay = i * 0.05;
+    html += `<div class="meal-card${isSupp(m.type) ? ' is-supp' : ''}" style="animation-delay:${delay}s">
+      <div class="meal-type-row">
+        <span class="type-badge ${badgeClass[m.type]}">${m.label}</span>
+      </div>
+      <div class="meal-name">${m.name}</div>
+      <div class="meal-macros-row">
+        <span class="macro-pill k">${m.kcal} ккал</span>
+        <span class="macro-pill p">Б ${m.p}г</span>
+        <span class="macro-pill f">Ж ${m.f}г</span>
+        <span class="macro-pill c">У ${m.c}г</span>
+      </div>
+      <div class="meal-ingredients-text">${m.ing}</div>
+      <button class="recipe-btn" onclick="toggleRecipe(this)">📖 Показать рецепт</button>
+      <div class="recipe-content">${m.recipe.replace(/\n/g,'<br>')}</div>
+    </div>`;
+  });
+  html += '</div>';
+
+  html += `<div class="day-totals">
+    <span class="totals-label">Итого за день</span>
+    <div class="totals-item"><span class="t-label">Калории</span><span class="t-val kcal">${tKcal}</span></div>
+    <div class="totals-item"><span class="t-label">Белки</span><span class="t-val prot">${tP}г</span></div>
+    <div class="totals-item"><span class="t-label">Жиры</span><span class="t-val fat">${tF}г</span></div>
+    <div class="totals-item"><span class="t-label">Углеводы</span><span class="t-val carb">${tC}г</span></div>
+  </div>`;
+
+  document.getElementById('mealsContainer').innerHTML = html;
+}
+
+showDay(0, document.querySelector('.day-btn'));
+</script>
+</body>
+</html>
